@@ -320,7 +320,7 @@ ExploratoryFactorAnalysis <- function(jaspResults, dataset, options, ...) {
 .efaCorrTable <- function(modelContainer, dataset, options, ready) {
   if (!options[["incl_correlations"]] || !is.null(modelContainer[["cortab"]])) return()
   cortab <- createJaspTable(gettext("Factor Correlations"))
-  cortab$dependOn("incl_correlations")
+  cortab$dependOn(c("incl_correlations", "cormethod"))
   cortab$addColumnInfo(name = "col", title = "", type = "string")
   cortab$position <- 4
   modelContainer[["cortab"]] <- cortab
@@ -329,7 +329,11 @@ ExploratoryFactorAnalysis <- function(jaspResults, dataset, options, ...) {
 
   efaResult <- modelContainer[["model"]][["object"]]
   if (efaResult$factors == 1) return()
-  cors <- zapsmall(as.matrix(efaResult$r.scores))
+  if (options[["cormethod"]] == "model") {
+    cors <- zapsmall(as.matrix(efaResult$Phi))
+  } else {
+    cors <- zapsmall(as.matrix(efaResult$r.scores))
+  }
   dims <- ncol(cors)
 
   cortab[["col"]] <- paste("Factor", 1:dims)

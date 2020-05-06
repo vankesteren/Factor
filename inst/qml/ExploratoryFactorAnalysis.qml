@@ -143,31 +143,13 @@ Form
 	{
 		title: qsTr("Output Options")
 
-		Slider {
-			name: "highlightText"
-			title: qsTr("Highlight")
-			value: 0.4
-		}
-
         Group
         {
-            Group
-            {
-                title: qsTr("Tables")
-                CheckBox { name: "incl_structure";		label: qsTr("Structure matrix")			}
-                CheckBox { name: "incl_correlations";	label: qsTr("Factor correlations")		}
-                CheckBox { name: "incl_fitIndices";		label: qsTr("Additional fit indices")	}
-            }
-            Group
-            {
-                title: qsTr("Plots")
-                CheckBox { name: "incl_pathDiagram";	label: qsTr("Path diagram")				}
-                CheckBox { name: "incl_screePlot";		label: qsTr("Scree plot")				}
-            }
-        }
-
-        Group
-        {
+            Slider {
+			    name: "highlightText"
+			    title: qsTr("Highlight")
+			    value: 0.4
+		    }
             Group
             {
                 title: qsTr("Assumption checks")
@@ -182,5 +164,33 @@ Form
                 RadioButton { value: "listwise";	label: qsTr("Exclude cases listwise")					}
             }
         }
+
+        Group
+        {
+            Group
+            {
+                title: qsTr("Tables")
+                CheckBox { name: "incl_structure";		label: qsTr("Structure matrix")			}
+                CheckBox { name: "incl_fitIndices";		label: qsTr("Additional fit indices")	}
+                CheckBox 
+                { 
+                    name: "incl_correlations"
+                    label: qsTr("Factor correlations")
+                    RadioButtonGroup
+                    {
+                        name: "cormethod"
+                        RadioButton { value: "model"; label: qsTr("Model-based correlations") ; checked: true }
+                        RadioButton { value: "score"; label: qsTr("Factor score-based correlations") }
+                    }	
+                }
+            }
+            Group
+            {
+                title: qsTr("Plots")
+                CheckBox { name: "incl_pathDiagram";	label: qsTr("Path diagram")				}
+                CheckBox { name: "incl_screePlot";		label: qsTr("Scree plot")				}
+            }
+        }
+
 	}
 }
