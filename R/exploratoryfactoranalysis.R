@@ -39,6 +39,7 @@ ExploratoryFactorAnalysis <- function(jaspResults, dataset, options, ...) {
   .efaLoadingsTable(     modelContainer, dataset, options, ready)
   .efaStructureTable(    modelContainer, dataset, options, ready)
   .efaEigenTable(        modelContainer, dataset, options, ready)
+  .efaResidTable(        modelContainer, dataset, options, ready)
   .efaCorrTable(         modelContainer, dataset, options, ready)
   .efaAdditionalFitTable(modelContainer, dataset, options, ready)
   .efaScreePlot(         modelContainer, dataset, options, ready)
@@ -343,7 +344,29 @@ ExploratoryFactorAnalysis <- function(jaspResults, dataset, options, ...) {
     cortab$addColumnInfo(name = thisname, title = thisname, type = "number", format = "dp:3")
     cortab[[thisname]] <- cors[,i]
   }
+}
 
+.efaResidTable <- function(modelContainer, dataset, options, ready) {
+  if (!options[["incl_rescor"]] || !is.null(modelContainer[["rescor"]])) return()
+  rescor <- createJaspTable(gettext("Residual Correlations"))
+  rescor$dependOn("incl_rescor")
+  rescor$addColumnInfo(name = "col", title = "", type = "string")
+  rescor$position <- 4.5
+  modelContainer[["rescor"]] <- rescor
+
+  if (!ready || modelContainer$getError()) return()
+
+  efaResult <- modelContainer[["model"]][["object"]]
+  cors <- zapsmall(efaResult$residual)
+  dims <- ncol(cors)
+
+  rescor[["col"]] <- .unv(rownames(cors))
+
+  for (i in 1:dims) {
+    thisname <- .unv(colnames(cors)[i])
+    rescor$addColumnInfo(name = thisname, title = thisname, type = "number", format = "dp:3")
+    rescor[[thisname]] <- cors[,i]
+  }
 }
 
 .efaAdditionalFitTable <- function(modelContainer, dataset, options, ready) {

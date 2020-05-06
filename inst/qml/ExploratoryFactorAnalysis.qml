@@ -172,6 +172,7 @@ Form
                 title: qsTr("Tables")
                 CheckBox { name: "incl_structure";		label: qsTr("Structure matrix")			}
                 CheckBox { name: "incl_fitIndices";		label: qsTr("Additional fit indices")	}
+                CheckBox { name: "incl_rescor";         label: qsTr("Residual correlations")    }
                 CheckBox 
                 { 
                     name: "incl_correlations"
